@@ -1,7 +1,7 @@
 # Vision Screens
 
 ## CaptureScreen (`lib/screens/capture_screen.dart`)
-5-step wizard for scanning a new product into lemonade-cashier inventory.
+5-step wizard for scanning a new product into 1bit-cashier inventory.
 
 **Steps** (enum `_Step`):
 1. `modeSelect` — choose video or stills mode

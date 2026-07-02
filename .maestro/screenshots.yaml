@@ -10,7 +10,7 @@
 # `takeScreenshot:` name becomes the PNG filename (no extension needed).
 #
 # IMPORTANT — server dependency:
-# The chat / OmniRouter / model-picker screens need a reachable Lemonade
+# The chat / OmniRouter / model-picker screens need a reachable 1bit NPU
 # server. For CI we either (a) stick to screens that work without one
 # (Settings, Servers list, empty Chat), or (b) point at a mock/local
 # server we spin up in the workflow. Today this flow captures the
@@ -18,7 +18,7 @@
 
 # appId is supplied by the runner via `-e APP_ID=…` (CI passes the iOS
 # bundle id on macOS jobs and the Android applicationId on Linux jobs).
-# These differ for this app: `lemonade.mobile` on iOS,
+# These differ for this app: `1bit.mobile` on iOS,
 # `com.1bit.mobile.chat.ai` on Android.
 appId: ${APP_ID}
 ---
@@ -56,7 +56,7 @@ appId: ${APP_ID}
       - takeScreenshot: 03_settings
       - back
 
-# 04 — Lemonade Omni (the omni router screen).
+# 04 — 1bit Models (the omni router screen).
 - tapOn:
     id: "menu_button"
     optional: true
@@ -64,13 +64,13 @@ appId: ${APP_ID}
     text: "Settings"
     optional: true
 - tapOn:
-    text: "Lemonade Omni"
+    text: "1bit Models"
     optional: true
 - waitForAnimationToEnd:
     timeout: 3000
 - runFlow:
     when:
-      visible: "Lemonade Omni"
+      visible: "1bit Models"
     commands:
       - takeScreenshot: 04_omni_router
       - back

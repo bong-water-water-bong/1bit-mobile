@@ -1,9 +1,9 @@
 # Architecture
 
-> Flutter mobile client for Lemonade Server — community fork extended with Vision Capture and Deduce screens for the lemonade-cashier product pipeline.
+> Flutter mobile client for 1bit NPU Server — community fork extended with Vision Capture and Deduce screens for the 1bit-cashier product pipeline.
 
 ## Overview
-1bit-mobile is a Flutter app that connects to a running Lemonade Server instance. The user's fork adds two major subsystems on `feat/vision-cashier`:
+1bit-mobile is a Flutter app that connects to a running 1bit NPU Server instance. The user's fork adds two major subsystems on `feat/vision-cashier`:
 
 ```
 Flutter App
@@ -22,7 +22,7 @@ Flutter App
 
 ## State Management
 Riverpod 2.x with `StateNotifierProvider`. Key providers:
-- `selectedServerProvider` — active Lemonade Server URL (upstream)
+- `selectedServerProvider` — active 1bit NPU Server URL (upstream)
 - `visionClientProvider` — derives `VisionApiClient` from selected server; points to port 8787
 
 ## Vision Subsystem (key flow)
@@ -46,9 +46,9 @@ iOS `record` package produces M4A (AAC). The server-side ffmpeg pipeline convert
 
 ## Key Decisions
 - **Why Riverpod over Bloc**: upstream uses Riverpod; consistency over preference
-- **Why port 8787**: lemonade-vision-server runs on 8787, separate from Lemonade Server's 13305
+- **Why port 8787**: 1bit-vision-server runs on 8787, separate from 1bit NPU Server's 13305
 - **Why lazy session start**: CaptureScreen starts a session only when the first still is uploaded, not on screen open
 
 ## Related
 - [[README]] — mission and agent handoff
-- `lemonade-vision-server` — the FastAPI backend these screens talk to
+- `1bit-vision-server` — the FastAPI backend these screens talk to

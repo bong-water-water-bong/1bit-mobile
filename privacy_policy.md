@@ -1,6 +1,6 @@
 **Privacy Policy**
 
-This privacy policy applies to the 1bit Mobile app (hereby referred to as "Application") for mobile devices that initially was created by Geramy L. Loveless as a foundation of the mobile app for Lemonade (hereby referred to as "Service Provider") as an Open Source service. This service is intended for use "AS IS".
+This privacy policy applies to the 1bit Mobile app (hereby referred to as "Application") for mobile devices that initially was created by Geramy L. Loveless as a foundation of the mobile app for 1bit (hereby referred to as "Service Provider") as an Open Source service. This service is intended for use "AS IS".
 
 **What information does the Application obtain and how is it used?**
 
@@ -40,7 +40,7 @@ By using the Application, you are consenting to the processing of your informati
 
 **Contact Us**
 
-If you have any questions regarding privacy while using the Application, you may submit a issue in the repository at: https://github.com/lemonade-sdk/1bit-mobile/issues
+If you have any questions regarding privacy while using the Application, you may submit a issue in the repository at: https://github.com/bong-water-water-bong/1bit-mobile/issues
 
 * * *
 

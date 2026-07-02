@@ -1,123 +1,42 @@
-# 🍋 1bit Mobile: local AI server companion app
+<h1 align="center">🟢 1bit Mobile</h1>
 
-**→ [Project Wiki](docs/wiki/README.md)** — architecture, decisions, gotchas, and agent onboarding.
-The wiki is stored in `docs/wiki/`; read it before changing the core
-app flow, and update the relevant wiki page whenever a change alters
-architecture, server behavior, agent handoff, or system decisions.
+<p align="center"><strong>Connect to your /1bit NPU server from iOS & Android. QR code pairing.</strong></p>
 
+<p align="center">
+  <a href="https://apps.apple.com/app/1bit-mobile/id6757372210">App Store</a> |
+  <a href="https://play.google.com/store/apps/details?id=com.1bit.mobile">Google Play</a> |
+  <a href="https://discord.gg/dSyV646eBs">Discord</a>
+</p>
 
-<table>
-  <tr>
-    <td>
-      <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/be/17/cb/be17cb07-3e0c-0ea2-06a9-70a7088f05ff/IMG_6296.png/230x499bb.webp" alt="Lemonade Chat Screenshot 1" width="230" />
-    </td>
-    <td>
-      <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/22/6f/5a/226f5a08-79fd-f148-9802-7af577d2ea69/IMG_6295.png/230x499bb.webp" alt="Lemonade Chat Screenshot 2" width="230" />
-    </td>
-    <td>
-      <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/14/4b/11/144b1186-8a00-a069-392a-6923f6376420/IMG_6294.png/230x499bb.webp" alt="Lemonade Chat Screenshot 3" width="230" />
-    </td>
-    <td>
-      <img src="https://github.com/user-attachments/assets/f6dd076c-2166-44b6-82b8-00ec851a0ad0" alt="Lemonade Chat Screenshot 4" width="230" />
-    </td>
-  </tr>
-</table>
+---
 
+1bit Mobile is a polished chat interface for your **/1bit NPU server** running on Strix Halo. Chat with Qwen3, Llama, and Gemma4 models from your phone — connected through an ngrok tunnel with QR code pairing.
 
-<h3 align="center">
-  <a href="https://apps.apple.com/us/app/1bit-mobile/id6757372210">iPhone/iPad</a> | 
-  <a href="https://play.google.com/store/apps/details?id=com.1bit.mobile.chat.ai">Android</a> | 
-  <a href="https://discord.gg/5xXzkMu8Zk">Discord</a>
-</h3>
+Part of the **1bit.systems** ecosystem:
+```
+/1bit coding agent → NPU engine (5 models, 120KB) → 1bit Mobile
+```
 
-
-1bit Mobile is a polished chat interface for [1bit NPU servers](https://github.com/lemonade-sdk/lemonade) with syntax highlighting and multi-server support. Start your server, connect this app, and take your Lemonade to go. 
-
-A Lemonade Open Source Project - maintained by [Geramy Loveless](https://github.com/Geramy).
+Open source. Zero Python. MIT licensed.
 
 ## Features
 
-- **Multi-Server Support**: Connect to multiple Lemonade/OpenAI-compatible servers
-- **Code Syntax Highlighting**: Beautiful code rendering with language detection
-- **Streaming Responses**: Real-time chat with live text streaming
-- **Dark Theme**: Modern dark UI that's easy on the eyes
-- **Persistent Chat History**: Never lose your conversations
-- **Cross-Platform**: Works on mobile and desktop
+- **One-tap connect**: Scan QR code from `mobile.sh` to pair with your NPU
+- **Multi-model**: Switch between Qwen3-0.6B, 8B, VL-4B, Llama, Gemma4
+- **Syntax highlighting**: Code blocks rendered with full syntax support
+- **Chat history**: Local storage, no cloud dependency
+- **OpenAI-compatible**: Works with any `/v1/chat/completions` endpoint
 
 ## Quick Start
 
 ```bash
-# Get dependencies
-flutter pub get
-
-# Run the app
-flutter run
+# On your Strix Halo desktop
+curl -fsSL https://1bit.systems/mobile.sh | sh
+# Scan the QR code with 1bit Mobile
 ```
 
-## Configuration
+## License
 
-### Adding AI Servers
+MIT — see [LICENSE](LICENSE).
 
-1. Launch the app and tap the settings gear icon
-2. Add your server details:
-   - **Name**: Something descriptive like "My Local Server"
-   - **URL**: Your server endpoint (e.g., `http://192.168.1.10:8000/api`) - Later will be changed to be user friendly.
-   - **API Key**: Optional, defaults to "lemonade" if empty
-
-### Testing Connections
-
-Use the checkmark button next to each server to verify connectivity before chatting.
-
-## How to Use
-
-- **Server Selection**: Pick your AI server from the top dropdown
-- **Model Selection**: Expand the drawer menu to choose different models
-- **Chat Interface**:
-  - Type your message and hit send
-  - Watch responses stream in real-time
-  - Code blocks get automatic syntax highlighting
-- **Copy Functions**:
-  - Long-press any message to copy it entirely
-  - Tap the copy icon on code blocks to copy just that code
-- **Chat Management**:
-  - Create new conversations from the drawer
-  - Switch between chat threads
-  - Delete old conversations you don't need
-
-## Tech Stack
-
-- **Framework**: Flutter with Material Design 3
-- **State Management**: Riverpod for clean architecture
-- **Persistence**: SharedPreferences for local storage
-- **API Integration**: dart_openai for OpenAI-compatible endpoints
-- **UI Polish**: Custom themes and smooth animations
-
-## Project Layout
-
-```
-lib/
-├── main.dart                 # App bootstrap & routing
-├── models/                   # Data structures
-│   ├── server_config.dart    # Server connection details
-│   ├── chat_message.dart     # Message format
-│   └── chat_history.dart     # Conversation management
-├── providers/                # State management
-│   ├── servers_provider.dart # Server list & selection
-│   ├── chat_provider.dart    # Active conversation
-│   ├── chat_history_provider.dart # Saved conversations
-│   └── models_provider.dart  # Available AI models
-├── screens/                  # Main UI screens
-│   ├── chat_screen.dart      # Main chat interface
-│   └── settings_screen.dart  # Server configuration
-├── services/                 # External integrations
-│   └── openai_service.dart   # AI API communication
-├── widgets/                  # Reusable UI components
-│   ├── chat_input.dart       # Message composition
-│   ├── message_bubble.dart   # Message display with code highlighting
-│   ├── server_selector.dart  # Server picker
-│   └── chat_drawer.dart      # Navigation sidebar
-└── utils/                    # Shared utilities
-    └── constants.dart        # Theme & styling constants
-```
-
-### This project is licensed as MIT
+Part of the 1bit.systems family: [1bit-systems](https://github.com/bong-water-water-bong/1bit-systems) | [1bit-agent](https://github.com/bong-water-water-bong/1bit-agent)

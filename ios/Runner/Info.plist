@@ -37,7 +37,7 @@
 	</dict>
 	<key>NSBonjourServices</key>
 	<array>
-		<string>_lemonade._udp</string>
+		<string>_1bit._udp</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>This app uses the camera to take photos for AI image analysis.</string>

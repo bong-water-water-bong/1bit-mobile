@@ -48,9 +48,9 @@ or Play Console.
 ## Server-data caveat
 
 Most of the screens worth showing in a store listing (chat, model
-picker, Omni Collection list) need a reachable Lemonade server. The
+picker, Omni Collection list) need a reachable 1bit NPU server. The
 current flow only captures screens that work offline (empty chat,
-drawer, Settings, Lemonade Omni empty state).
+drawer, Settings, 1bit Models empty state).
 
 When you're ready to capture data-rich screens, options:
 
@@ -60,7 +60,7 @@ When you're ready to capture data-rich screens, options:
 2. **Mock server** — spin up a tiny HTTP+WS responder in the workflow
    that returns canned `/v1/models`, `/v1/chat/completions`, etc.
    More realistic, more moving parts.
-3. **Real server in CI** — point CI at a publicly reachable Lemonade
+3. **Real server in CI** — point CI at a publicly reachable 1bit NPU
    instance. Easiest to start, hardest to keep deterministic.
 
 ## Extending the flow

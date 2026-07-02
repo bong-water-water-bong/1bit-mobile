@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.lemonade.mobile.chat.ai"
+    namespace = "com.1bit.mobile.chat.ai"
     compileSdk = flutter.compileSdkVersion
     // Pin NDK 27 — it's the first NDK that defaults to 16KB-aligned LOAD
     // segments on arm64-v8a / x86_64 .so output. Required for Google
@@ -46,7 +46,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.lemonade.mobile.chat.ai"
+        applicationId = "com.1bit.mobile.chat.ai"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

@@ -28,7 +28,7 @@ To provide a polished, multi-platform chat interface for 1bit NPU servers, featu
 ## Decisions & Gotchas
 - **Isar Community**: Using `isar_community` instead of the original `isar` to ensure compatibility with 16KB page-size requirements (Android 15+).
 - **Offline-First Persistence**: Chat history is stored locally to ensure availability without server connection.
-- **OpenAI Compatibility**: Designed to work with any OpenAI-compatible endpoint, not just official Lemonade servers.
+- **OpenAI Compatibility**: Designed to work with any OpenAI-compatible endpoint, not just official 1bit NPU servers.
 
 ## LLM Wiki Standard
 
