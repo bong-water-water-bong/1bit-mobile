@@ -1,0 +1,117 @@
+name: 1bit_mobile
+description: "A chat app for 1bit NPU servers with syntax highlighting and multi-server support"
+publish_to: 'none'
+version: 3.0.2+14
+
+environment:
+  sdk: ^3.8.1
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # State management
+  flutter_riverpod: ^2.0.0
+
+  # Persistence
+  shared_preferences: ^2.0.0          # legacy keys + simple scalar prefs
+  # Community fork of Isar 3 — the original Isar was abandoned in 2023
+  # before the Android 15 / Google Play 16KB page-size requirement, so
+  # `isar_flutter_libs` 3.1.0+1's prebuilt .so files fail the Play
+  # alignment check. `isar_community` is a same-API drop-in fork with
+  # 16KB-aligned binaries.
+  isar_community: ^3.3.0
+  isar_community_flutter_libs: ^3.3.0
+  flutter_secure_storage: ^9.0.0      # API keys / auth tokens
+  path: ^1.8.0
+
+  # UUID generation
+  uuid: ^4.0.0
+
+  # Markdown rendering
+  flutter_markdown: ^0.7.1
+  markdown: ^7.2.2
+
+  # Syntax highlighting
+  flutter_highlight: ^0.7.0
+  highlight: ^0.7.0
+
+  # Image handling
+  image_picker: ^1.0.0
+  permission_handler: ^11.0.0
+  path_provider: ^2.0.0
+  file_picker: ^8.0.0
+
+  # HTTP client for direct API calls
+  http: ^1.0.0
+  http_parser: ^4.0.0           # MediaType for multipart uploads
+  crypto: ^3.0.0                # sha256 for content-addressed attachments
+
+  # Image actions in the chat bubble fullscreen viewer.
+  share_plus: ^10.0.0    # cross-platform "Share…" sheet
+  gal: ^2.3.0            # save image to Photos / camera roll / Files
+
+  # Audio recording & playback
+  record: ^6.2.0
+  just_audio: ^0.9.39
+  mic_stream_recorder: ^1.1.2
+  # Native voice-processing IO unit (iOS) + audio session config.
+  audio_session: ^0.1.25
+  # Silero VAD via ONNX Runtime — replaces our amplitude-only end-of-speech
+  # detector with a model that distinguishes speech from background noise.
+  vad: ^0.0.5
+
+  # WebSocket client for realtime transcription
+  web_socket_channel: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_launcher_icons: ^0.13.1
+
+  # Isar code generation
+  isar_community_generator: ^3.3.0
+  build_runner: ^2.4.0
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^5.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/lemonade_logo.png
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/lemonade_logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/lemonade_logo.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/lemonade_logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/lemonade_logo.png"

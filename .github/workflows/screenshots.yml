@@ -1,0 +1,259 @@
+name: Store Screenshots
+
+# Build once per platform, then fan out to one Maestro screenshot job
+# per device profile. The screenshot jobs are pure
+# "install-app-and-tap-around" and re-use the artifact produced by
+# the build job — way faster (and cheaper, especially on macOS-14
+# runners) than running `flutter build` 7 separate times.
+#
+# Triggers:
+#   • tag push (`v*`) — your "ship a release" moment
+#   • workflow_dispatch — the "Run workflow" button
+#
+# Outputs: one PNG-only artifact per (platform, device). Each PNG is
+# at the simulator/emulator's native resolution → drop straight into
+# App Store Connect / Play Console.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch: {}
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────
+  # Single-shot builds. Producer jobs for the screenshot matrices.
+  # ──────────────────────────────────────────────────────────────────
+
+  build-android:
+    name: Build · Android APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      - name: Codegen
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - run: flutter build apk --debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 1
+          if-no-files-found: error
+
+  build-ios:
+    name: Build · iOS simulator app
+    runs-on: macos-14
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Disable Flutter SPM (force CocoaPods)
+        run: flutter config --no-enable-swift-package-manager
+
+      - run: flutter pub get
+
+      - name: Codegen
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - run: flutter build ios --simulator --debug --no-codesign
+
+      - name: Archive .app bundle
+        # upload-artifact with `path: …/Runner.app` uploads the
+        # *contents* of the .app, not the .app directory itself, so the
+        # downloader can't find a `*.app` directory to install. Pre-zip
+        # with `ditto --keepParent` so the wrapper survives the round
+        # trip; unzip on the consumer side.
+        run: |
+          APP=$(find build/ios/iphonesimulator -name "*.app" -type d | head -n1)
+          if [ -z "$APP" ]; then
+            echo "No .app found under build/ios/iphonesimulator" >&2
+            find build/ios -maxdepth 4 >&2
+            exit 1
+          fi
+          ditto -c -k --sequesterRsrc --keepParent "$APP" sim-app.zip
+          ls -l sim-app.zip
+
+      - name: Upload .app bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-sim-app
+          path: sim-app.zip
+          retention-days: 1
+          if-no-files-found: error
+
+  # ──────────────────────────────────────────────────────────────────
+  # Screenshot fan-out. One job per device profile per platform.
+  # ──────────────────────────────────────────────────────────────────
+
+  ios:
+    name: iOS · ${{ matrix.device.label }}
+    needs: build-ios
+    runs-on: macos-14
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        device:
+          - { id: "iPhone 15 Pro Max",                       label: "iphone-6.5"  }
+          # 8 Plus was dropped from current Xcode simulators — SE 3rd
+          # gen is the small iPhone Apple still ships, and the App
+          # Store accepts 6.5" screenshots in the 5.5" slot anyway.
+          - { id: "iPhone SE (3rd generation)",              label: "iphone-se"   }
+          - { id: "iPad Pro (12.9-inch) (6th generation)",   label: "ipad-12.9"   }
+          - { id: "iPad Pro (11-inch) (4th generation)",     label: "ipad-11"     }
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download .app bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: ios-sim-app
+          path: app-bundle
+
+      - name: Unpack .app
+        run: |
+          # build-ios uploads `sim-app.zip` (made with `ditto --keepParent`),
+          # so unzipping restores the Runner.app/ directory wrapper.
+          ditto -x -k app-bundle/sim-app.zip app-unpacked/
+          APP=$(find app-unpacked -maxdepth 3 -name "*.app" -type d | head -n1)
+          if [ -z "$APP" ]; then
+            echo "No .app inside the downloaded artifact:" >&2
+            find app-unpacked | head >&2
+            exit 1
+          fi
+          echo "APP_PATH=$APP" >> "$GITHUB_ENV"
+
+      - name: Boot simulator
+        run: |
+          UDID=$(xcrun simctl list devices available -j | jq -r --arg n "${{ matrix.device.id }}" '.devices | to_entries | map(.value[] | select(.name == $n)) | .[0].udid')
+          if [ -z "$UDID" ] || [ "$UDID" = "null" ]; then
+            echo "No available simulator named '${{ matrix.device.id }}' — listing what we have:"
+            xcrun simctl list devices available
+            exit 1
+          fi
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+
+      - name: Install app
+        run: xcrun simctl install "$UDID" "$APP_PATH"
+
+      - name: Install Maestro
+        run: |
+          curl -fsSL https://get.maestro.mobile.dev | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Run Maestro flow
+        # Maestro's `takeScreenshot: <name>` writes <name>.png to the
+        # *current working directory*, NOT into `--debug-output` (which
+        # is reserved for Maestro's own diagnostic bundles). So we cd
+        # into the per-device output dir first and run Maestro from
+        # there with a relative path back to the flow file. Without
+        # this, PNGs land at the repo root and the upload glob matches
+        # nothing.
+        run: |
+          mkdir -p out/${{ matrix.device.label }}
+          cd out/${{ matrix.device.label }}
+          "$HOME/.maestro/bin/maestro" --udid "$UDID" test ../../.maestro/screenshots.yaml \
+            -e APP_ID=lemonade.mobile
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-${{ matrix.device.label }}
+          path: out/${{ matrix.device.label }}/**/*.png
+
+  android:
+    name: Android · ${{ matrix.device.label }}
+    needs: build-android
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        device:
+          - { profile: "pixel_7",  api: 34, label: "phone"      }
+          - { profile: "Nexus 7",  api: 34, label: "tablet-7"   }
+          - { profile: "Nexus 10", api: 34, label: "tablet-10"  }
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable KVM (faster emulator)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: android-apk
+          path: apk
+
+      - name: Run emulator + Maestro
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.device.api }}
+          target: google_apis
+          arch: x86_64
+          profile: ${{ matrix.device.profile }}
+          force-avd-creation: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          # The emulator-runner action executes every line of `script:`
+          # as its own `sh -c` invocation. Two consequences we have to
+          # work around:
+          #   1. State that lives in a shell (cwd from `cd`, PATH from
+          #      `export`) does NOT survive into the next line. We chain
+          #      `cd … && maestro …` so cd + run share one shell, and
+          #      we call Maestro by its absolute install path.
+          #   2. Backslash line-continuations don't join lines — each
+          #      `\<newline>` would leave a literal `\` as a Maestro
+          #      argument. The whole Maestro invocation has to fit on
+          #      ONE physical line.
+          # Why we cd at all: Maestro's `takeScreenshot: <name>` writes
+          # <name>.png to the current working directory, NOT into the
+          # `--debug-output` path. So we cd into out/<device>/ first.
+          script: |
+            adb install -r apk/app-debug.apk
+            curl -fsSL https://get.maestro.mobile.dev | bash
+            mkdir -p out/${{ matrix.device.label }}
+            cd out/${{ matrix.device.label }} && "$HOME/.maestro/bin/maestro" test ../../.maestro/screenshots.yaml -e APP_ID=com.lemonade.mobile.chat.ai
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-${{ matrix.device.label }}
+          path: out/${{ matrix.device.label }}/**/*.png

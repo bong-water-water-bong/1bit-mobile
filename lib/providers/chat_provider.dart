@@ -1,0 +1,249 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../constants/messages.dart';
+import '../models/chat_message.dart';
+import '../omni/tool_executor.dart';
+import '../providers/chat_history_provider.dart';
+import '../providers/1bit_client_provider.dart';
+import '../providers/models_provider.dart';
+import '../providers/omni_router_provider.dart';
+import '../providers/servers_provider.dart';
+import '../services/chat_service.dart';
+import '../storage/file_storage.dart';
+
+/// Active chat messages. Mirrors whatever ChatHistory the chat-history provider
+/// has marked active, plus any in-flight assistant placeholder.
+final chatProvider =
+    StateNotifierProvider<ChatNotifier, List<ChatMessage>>((ref) => ChatNotifier(ref));
+
+class ChatNotifier extends StateNotifier<List<ChatMessage>> {
+  final Ref ref;
+
+  ChatNotifier(this.ref) : super([]) {
+    ref.listen(chatHistoryProvider, (_, __) => _syncFromActiveChat());
+    _syncFromActiveChat();
+  }
+
+  void _syncFromActiveChat() {
+    final active = ref.read(chatHistoryProvider.notifier).getActiveChat();
+    state = active?.messages ?? [];
+  }
+
+  Future<void> sendMessage(
+    String message, {
+    List<String>? imagePaths,
+    ScrollController? scrollController,
+  }) async {
+    final server = ref.read(selectedServerProvider);
+    if (server == null) {
+      await _appendError(AppMessages.noServerSelected);
+      return;
+    }
+
+    // Resolve the actual LLM id. If the user picked a Collection, the
+    // wire provider substitutes its chat-shaped component so we don't
+    // post the Collection meta-id to /chat/completions (server returns a
+    // "GGUF file not found for checkpoint" 500 in that case).
+    final selectedModel = ref.read(wireLlmModelProvider) ?? '';
+    if (selectedModel.isEmpty) {
+      await _appendError(AppMessages.noModelSelected);
+      return;
+    }
+
+    final availableModels = ref.read(modelsProvider);
+    final modelInfo = availableModels.firstWhere(
+      (m) => m.id == selectedModel,
+      orElse: () => ModelInfo(selectedModel, const []),
+    );
+
+    final hasImages = imagePaths != null && imagePaths.isNotEmpty;
+    if (hasImages && !modelInfo.supportsVision) {
+      await _appendError(AppMessages.visionModelServerError(selectedModel));
+      return;
+    }
+
+    // Build & persist the user message immediately.
+    final userParts = <MessageContent>[];
+    if (message.isNotEmpty) {
+      userParts.add(MessageContent(type: MessageContentType.text, value: message));
+    }
+    if (hasImages) {
+      for (final dataUrl in imagePaths) {
+        userParts.add(MessageContent(type: MessageContentType.image, value: dataUrl));
+      }
+    }
+    final userMessage = ChatMessage(role: MessageRole.user, content: userParts);
+    final history = [...state, userMessage];
+    await ref.read(chatHistoryProvider.notifier).updateActiveChat(history);
+    _scroll(scrollController, animated: true);
+
+    // Add the assistant placeholder.
+    final placeholder = ChatMessage.text(role: MessageRole.assistant, text: '');
+    var working = [...history, placeholder];
+    await ref.read(chatHistoryProvider.notifier).updateActiveChat(working);
+
+    final client = ref.read(1bitClientProvider);
+    if (client == null) {
+      await _replaceLast(working, AppMessages.noServerSelected);
+      return;
+    }
+
+    // Force omni mode on for Collection selections — the whole point of a
+    // Collection is "use this bundle of components", which is exactly what
+    // the agent loop drives. The toggle still controls regular models.
+    final omniEnabled = ref.read(omniRouterEnabledProvider) ||
+        ref.read(selectedIsCollectionProvider);
+    final caps = ref.read(omniCapabilitiesProvider);
+    final executor = ref.read(omniToolExecutorProvider);
+
+    final svc = ChatService(client);
+
+    var assistantText = '';
+    final artifactParts = <MessageContent>[];
+
+    try {
+      final stream = svc.run(
+        llmModel: selectedModel,
+        history: history,
+        omniRouterEnabled: omniEnabled,
+        capabilities: caps,
+        executor: executor,
+      );
+
+      await for (final ev in stream) {
+        switch (ev) {
+          case ChatTokens():
+            assistantText += ev.delta;
+            working = await _updateAssistant(
+              working,
+              text: assistantText,
+              extra: artifactParts,
+            );
+            _scroll(scrollController);
+          case ChatStatus():
+            // Show the status as the in-flight assistant text. Final text overwrites it.
+            working = await _updateAssistant(
+              working,
+              text: ev.message,
+              extra: artifactParts,
+            );
+          case ChatArtifact():
+            final part = await _persistArtifact(ev.artifact);
+            if (part != null) artifactParts.add(part);
+            working = await _updateAssistant(
+              working,
+              text: assistantText,
+              extra: artifactParts,
+            );
+            _scroll(scrollController);
+          case ChatDone():
+            assistantText = ev.text;
+            // Replace artifact parts with whatever the agent produced this turn,
+            // but don't double-add ones we already persisted incrementally.
+            if (artifactParts.isEmpty) {
+              for (final art in ev.artifacts) {
+                final part = await _persistArtifact(art);
+                if (part != null) artifactParts.add(part);
+              }
+            }
+            working = await _updateAssistant(
+              working,
+              text: assistantText,
+              extra: artifactParts,
+            );
+            _scroll(scrollController);
+        }
+      }
+    } catch (e) {
+      final errText = AppMessages.genericError(e.toString());
+      await _replaceLast(working, errText);
+    }
+  }
+
+  Future<List<ChatMessage>> _updateAssistant(
+    List<ChatMessage> messages, {
+    required String text,
+    List<MessageContent> extra = const [],
+  }) async {
+    final last = messages.last;
+    final parts = <MessageContent>[];
+    if (text.isNotEmpty) {
+      parts.add(MessageContent(type: MessageContentType.text, value: text));
+    }
+    parts.addAll(extra);
+    final updated = ChatMessage(
+      role: MessageRole.assistant,
+      content: parts.isEmpty
+          ? [MessageContent(type: MessageContentType.text, value: '')]
+          : parts,
+      timestamp: last.timestamp,
+    );
+    final next = [...messages.sublist(0, messages.length - 1), updated];
+    await ref.read(chatHistoryProvider.notifier).updateActiveChat(next);
+    return next;
+  }
+
+  Future<MessageContent?> _persistArtifact(Artifact artifact) async {
+    try {
+      final ext = '.${artifact.mime.split('/').last}';
+      final kind = artifact.kind == ArtifactKind.image ? 'image' : 'audio';
+      await AttachmentStore.writeBase64(
+        base64Data: artifact.base64Data,
+        kind: kind,
+        extension: ext,
+      );
+      final dataUrl = 'data:${artifact.mime};base64,${artifact.base64Data}';
+      return MessageContent(
+        type: artifact.kind == ArtifactKind.image
+            ? MessageContentType.image
+            : MessageContentType.audio,
+        value: dataUrl,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> _appendError(String text) async {
+    final errMessage = ChatMessage.text(role: MessageRole.assistant, text: text);
+    final next = [...state, errMessage];
+    await ref.read(chatHistoryProvider.notifier).updateActiveChat(next);
+  }
+
+  Future<void> _replaceLast(List<ChatMessage> working, String text) async {
+    final next = [
+      ...working.sublist(0, working.length - 1),
+      ChatMessage.text(
+        role: MessageRole.assistant,
+        text: text,
+        timestamp: DateTime.now(),
+      ),
+    ];
+    await ref.read(chatHistoryProvider.notifier).updateActiveChat(next);
+  }
+
+  void _scroll(ScrollController? controller, {bool animated = false}) {
+    if (controller == null || !controller.hasClients) return;
+    if (animated) {
+      controller.animateTo(
+        controller.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+      );
+    } else {
+      controller.jumpTo(controller.position.maxScrollExtent);
+    }
+  }
+
+  void clearChat() {
+    ref.read(chatHistoryProvider.notifier).updateActiveChat([]);
+  }
+}
+
+// jsonEncode kept around for any future tool-calls payload persistence.
+// ignore: unused_element
+String _unused() => jsonEncode({'_': null});
