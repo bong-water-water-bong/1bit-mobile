@@ -45,7 +45,7 @@ class ModelDownloadsState {
 /// leaves the screen that started it.
 class ModelDownloadsNotifier extends StateNotifier<ModelDownloadsState> {
   ModelDownloadsNotifier(this._ref) : super(const ModelDownloadsState()) {
-    _ref.listen(1bitClientProvider, (_, __) => _cancelAll());
+    _ref.listen(onebitClientProvider, (_, __) => _cancelAll());
   }
 
   final Ref _ref;
@@ -54,7 +54,7 @@ class ModelDownloadsNotifier extends StateNotifier<ModelDownloadsState> {
 
   void start(String modelId) {
     if (_subs.containsKey(modelId)) return;
-    final client = _ref.read(1bitClientProvider);
+    final client = _ref.read(onebitClientProvider);
     if (client == null) return;
 
     final clearedFinished = Map<String, ModelDownloadFinish>.from(state.finished)

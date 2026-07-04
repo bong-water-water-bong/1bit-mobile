@@ -4,7 +4,7 @@ import 'package:onebit_mobile/providers/servers_provider.dart';
 import 'package:onebit_mobile/screens/servers_screen.dart';
 
 /// Drawer-friendly picker for the active server. Tapping a row switches
-/// `selectedServerProvider`, which cascades through `1bitClientProvider`
+/// `selectedServerProvider`, which cascades through `onebitClientProvider`
 /// to flip every API call to the new host.
 class ServerSelector extends ConsumerWidget {
   const ServerSelector({super.key});

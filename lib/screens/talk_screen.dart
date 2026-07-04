@@ -50,7 +50,7 @@ class _TalkScreenState extends ConsumerState<TalkScreen>
   }
 
   Future<void> _start() async {
-    final client = ref.read(1bitClientProvider);
+    final client = ref.read(onebitClientProvider);
     // Use the wire LLM — collapses Collections to their chat-shaped
     // component so the chat call doesn't 500 on the meta-id.
     final llm = ref.read(wireLlmModelProvider);

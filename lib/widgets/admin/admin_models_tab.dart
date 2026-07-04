@@ -31,7 +31,7 @@ class _AdminModelsTabState extends ConsumerState<AdminModelsTab> {
       _error = null;
     });
     try {
-      final client = ref.read(1bitClientProvider);
+      final client = ref.read(onebitClientProvider);
       if (client == null) return;
       final list = await client.models.all();
       final health = await client.admin.health();
@@ -56,7 +56,7 @@ class _AdminModelsTabState extends ConsumerState<AdminModelsTab> {
   }
 
   Future<void> _load(String modelName) async {
-    final client = ref.read(1bitClientProvider);
+    final client = ref.read(onebitClientProvider);
     if (client == null) return;
     _busySnack('Loading $modelName…');
     try {
@@ -69,7 +69,7 @@ class _AdminModelsTabState extends ConsumerState<AdminModelsTab> {
   }
 
   Future<void> _unload(String modelName) async {
-    final client = ref.read(1bitClientProvider);
+    final client = ref.read(onebitClientProvider);
     if (client == null) return;
     _busySnack('Unloading $modelName…');
     try {
@@ -85,7 +85,7 @@ class _AdminModelsTabState extends ConsumerState<AdminModelsTab> {
     final ok = await _confirm('Delete $modelName?',
         'This removes the model from local storage on the server. Cannot be undone.');
     if (!ok) return;
-    final client = ref.read(1bitClientProvider);
+    final client = ref.read(onebitClientProvider);
     if (client == null) return;
     try {
       await client.admin.delete(modelName: modelName);
@@ -103,7 +103,7 @@ class _AdminModelsTabState extends ConsumerState<AdminModelsTab> {
   Future<void> _pull() async {
     final spec = await _showPullDialog();
     if (spec == null) return;
-    final client = ref.read(1bitClientProvider);
+    final client = ref.read(onebitClientProvider);
     if (client == null) return;
 
     final progress = ValueNotifier<double?>(null);

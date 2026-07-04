@@ -86,7 +86,7 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
     var working = [...history, placeholder];
     await ref.read(chatHistoryProvider.notifier).updateActiveChat(working);
 
-    final client = ref.read(1bitClientProvider);
+    final client = ref.read(onebitClientProvider);
     if (client == null) {
       await _replaceLast(working, AppMessages.noServerSelected);
       return;

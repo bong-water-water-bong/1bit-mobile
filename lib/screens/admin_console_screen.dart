@@ -14,7 +14,7 @@ class AdminConsoleScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final client = ref.watch(1bitClientProvider);
+    final client = ref.watch(onebitClientProvider);
 
     if (client == null) {
       return Scaffold(

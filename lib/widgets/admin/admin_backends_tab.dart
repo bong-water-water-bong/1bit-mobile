@@ -27,7 +27,7 @@ class _AdminBackendsTabState extends ConsumerState<AdminBackendsTab> {
       _error = null;
     });
     try {
-      final client = ref.read(1bitClientProvider);
+      final client = ref.read(onebitClientProvider);
       if (client == null) return;
       _systemInfo = await client.admin.systemInfo();
     } catch (e) {
@@ -38,7 +38,7 @@ class _AdminBackendsTabState extends ConsumerState<AdminBackendsTab> {
   }
 
   Future<void> _install(String recipe, String backend, {bool force = false}) async {
-    final client = ref.read(1bitClientProvider);
+    final client = ref.read(onebitClientProvider);
     if (client == null) return;
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('Installing $recipe:$backend…')));
@@ -52,7 +52,7 @@ class _AdminBackendsTabState extends ConsumerState<AdminBackendsTab> {
   }
 
   Future<void> _uninstall(String recipe, String backend) async {
-    final client = ref.read(1bitClientProvider);
+    final client = ref.read(onebitClientProvider);
     if (client == null) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Uninstalling $recipe:$backend…')),

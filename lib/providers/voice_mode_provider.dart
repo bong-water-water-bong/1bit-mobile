@@ -144,7 +144,7 @@ class VoiceModeController extends StateNotifier<VoiceModeStatus> {
     _callActive = true;
     _log('startCall()');
 
-    final client = ref.read(1bitClientProvider);
+    final client = ref.read(onebitClientProvider);
     final llm = ref.read(wireLlmModelProvider);
     if (client == null || llm == null) {
       _fail('Select a server and model first.');
@@ -556,7 +556,7 @@ class VoiceModeController extends StateNotifier<VoiceModeStatus> {
   }
 
   Future<String> _httpTranscribe(Uint8List wavBytes) async {
-    final client = ref.read(1bitClientProvider);
+    final client = ref.read(onebitClientProvider);
     if (client == null) throw StateError('No server selected.');
     final asr = _asrModel ?? '';
     final tmp = await getTemporaryDirectory();
@@ -583,7 +583,7 @@ class VoiceModeController extends StateNotifier<VoiceModeStatus> {
   }
 
   Future<_ReplyBundle> _runLlmTurn({void Function()? onEndCall}) async {
-    final client = ref.read(1bitClientProvider)!;
+    final client = ref.read(onebitClientProvider)!;
     final llm = ref.read(wireLlmModelProvider)!;
     final omniEnabled = ref.read(omniRouterEnabledProvider) ||
         ref.read(selectedIsCollectionProvider);
@@ -680,7 +680,7 @@ class VoiceModeController extends StateNotifier<VoiceModeStatus> {
     } else if (reply.text.isNotEmpty) {
       final ttsModel = ref.read(globalModelDefaultsProvider).textToAudioModel ??
           _firstModelId(ref.read(modelsProvider), (m) => m.supportsTts);
-      final client = ref.read(1bitClientProvider);
+      final client = ref.read(onebitClientProvider);
       if (ttsModel != null && client != null) {
         try {
           _log('synthesizing TTS via $ttsModel');

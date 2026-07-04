@@ -29,7 +29,7 @@ class _AdminDashboardTabState extends ConsumerState<AdminDashboardTab> {
       _error = null;
     });
     try {
-      final client = ref.read(1bitClientProvider);
+      final client = ref.read(onebitClientProvider);
       if (client == null) {
         setState(() {
           _loading = false;

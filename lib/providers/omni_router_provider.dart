@@ -319,7 +319,7 @@ final omniCapabilitiesProvider = Provider<CapabilitySnapshot?>((ref) {
 /// Tool executor wired to the active server's API client and the resolved
 /// per-tool model assignments.
 final omniToolExecutorProvider = Provider<OmniToolExecutor?>((ref) {
-  final client = ref.watch(1bitClientProvider);
+  final client = ref.watch(onebitClientProvider);
   final caps = ref.watch(omniCapabilitiesProvider);
   if (client == null || caps == null) return null;
   final toolModels = <String, String>{

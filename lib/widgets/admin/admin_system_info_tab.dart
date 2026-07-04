@@ -27,7 +27,7 @@ class _AdminSystemInfoTabState extends ConsumerState<AdminSystemInfoTab> {
       _error = null;
     });
     try {
-      final client = ref.read(1bitClientProvider);
+      final client = ref.read(onebitClientProvider);
       if (client == null) return;
       _info = await client.admin.systemInfo();
     } catch (e) {

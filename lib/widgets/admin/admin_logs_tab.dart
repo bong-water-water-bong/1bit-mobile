@@ -33,7 +33,7 @@ class _AdminLogsTabState extends ConsumerState<AdminLogsTab> {
   }
 
   Future<void> _connect() async {
-    final client = ref.read(1bitClientProvider);
+    final client = ref.read(onebitClientProvider);
     if (client == null) return;
     try {
       final health = await client.admin.health();
