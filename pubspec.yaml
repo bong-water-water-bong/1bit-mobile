@@ -1,4 +1,4 @@
-name: 1bit_mobile
+name: onebit_mobile
 description: "A chat app for 1bit NPU servers with syntax highlighting and multi-server support"
 publish_to: 'none'
 version: 3.0.2+14
