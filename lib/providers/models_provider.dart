@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:onebit_mobile/api/1bit_client.dart';
+import 'package:onebit_mobile/api/lemonade_client.dart';
 import 'package:onebit_mobile/providers/servers_provider.dart';
 import 'package:onebit_mobile/utils/model_utils.dart';
 
@@ -65,7 +65,7 @@ class ModelsNotifier extends StateNotifier<List<ModelInfo>> {
     final selectedServer = ref.read(selectedServerProvider);
     if (selectedServer == null) return;
 
-    final client = 1bitApiClient(selectedServer);
+    final client = OnebitApiClient(selectedServer);
     try {
       final apiModels = await client.models.installed();
       final modelInfos = apiModels

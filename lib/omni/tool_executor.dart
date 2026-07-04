@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
-import '../api/1bit_client.dart';
+import '../api/lemonade_client.dart';
 import '../api/types/audio_request.dart';
 import '../api/types/chat_message.dart';
 import '../api/types/chat_request.dart';
@@ -96,7 +96,7 @@ class EndCallResult extends ToolExecutionResult {
 
 /// Translates a tool_call into the appropriate 1bit endpoint call.
 class OmniToolExecutor {
-  final 1bitApiClient client;
+  final OnebitApiClient client;
 
   /// Maps tool name → model id chosen for that tool.
   final Map<String, String> toolModels;

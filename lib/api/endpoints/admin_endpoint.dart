@@ -6,7 +6,7 @@ import '../sse/sse_parser.dart';
 
 /// 1bit admin / management endpoints. See `docs/api/1bit.md`.
 class AdminEndpoint {
-  final 1bitApiClient _client;
+  final OnebitApiClient _client;
   AdminEndpoint(this._client);
 
   // ---------------------------------------------------------------------------

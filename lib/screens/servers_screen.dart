@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../api/1bit_client.dart';
+import '../api/lemonade_client.dart';
 import '../constants/colors.dart';
 import '../models/discovered_server.dart';
 import '../models/server_config.dart';
@@ -61,7 +61,7 @@ class _ServersScreenState extends ConsumerState<ServersScreen> {
     if (_isTestingServer) return;
     setState(() => _isTestingServer = true);
 
-    final client = 1bitApiClient(server);
+    final client = OnebitApiClient(server);
     const probeTimeout = Duration(seconds: 4);
     try {
       var alive = false;

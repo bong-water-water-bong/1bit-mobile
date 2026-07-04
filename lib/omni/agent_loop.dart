@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import '../api/1bit_client.dart';
+import '../api/lemonade_client.dart';
 import '../api/types/chat_message.dart';
 import '../api/types/chat_request.dart';
 import '../api/types/tool_call.dart';
@@ -58,7 +58,7 @@ class AgentDone extends AgentEvent {
 /// any user attachments), drives the LLM through up to [kAgentMaxIterations]
 /// rounds of tool calling, and emits [AgentEvent]s for the UI.
 class AgentLoop {
-  final 1bitApiClient client;
+  final OnebitApiClient client;
   final String llmModelId;
   final CapabilitySnapshot capabilities;
   final OmniToolExecutor executor;

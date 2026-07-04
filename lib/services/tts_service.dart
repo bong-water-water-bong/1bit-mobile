@@ -5,7 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import '../api/1bit_client.dart';
+import '../api/lemonade_client.dart';
 import '../api/types/audio_request.dart';
 
 /// Convenience wrapper for TTS playback. Used by the manual "Read aloud" button
@@ -13,7 +13,7 @@ import '../api/types/audio_request.dart';
 /// app. (Inside the agent loop, TTS goes through the OmniRouter executor and
 /// produces an Artifact instead.)
 class TtsService {
-  final 1bitApiClient client;
+  final OnebitApiClient client;
   final String model;
   final AudioPlayer _player = AudioPlayer();
 

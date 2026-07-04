@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../api/1bit_client.dart';
+import '../api/lemonade_client.dart';
 import '../api/types/chat_message.dart';
 import '../api/types/chat_request.dart';
 import '../api/types/chat_response.dart';
@@ -16,7 +16,7 @@ import '../omni/tool_executor.dart';
 /// Both paths emit a unified [ChatTurnEvent] stream so callers can render the
 /// turn the same way regardless of mode.
 class ChatService {
-  final 1bitApiClient client;
+  final OnebitApiClient client;
   ChatService(this.client);
 
   /// Run a chat turn. Caller passes the full conversation [history] (already

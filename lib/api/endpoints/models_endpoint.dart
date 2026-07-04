@@ -2,7 +2,7 @@ import '../1bit_client.dart';
 import '../types/model_info.dart';
 
 class ModelsEndpoint {
-  final 1bitApiClient _client;
+  final OnebitApiClient _client;
   ModelsEndpoint(this._client);
 
   /// Returns every model the server knows about, including ones that are

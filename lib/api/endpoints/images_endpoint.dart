@@ -3,7 +3,7 @@ import '../types/image_request.dart';
 import '../types/image_response.dart';
 
 class ImagesEndpoint {
-  final 1bitApiClient _client;
+  final OnebitApiClient _client;
   ImagesEndpoint(this._client);
 
   /// `POST /v1/images/generations`

@@ -1,13 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../api/1bit_client.dart';
+import '../api/lemonade_client.dart';
 import 'servers_provider.dart';
 
-/// One [1bitApiClient] per active server. Auto-disposed on server change.
-final onebitClientProvider = Provider<1bitApiClient?>((ref) {
+/// One [OnebitApiClient] per active server. Auto-disposed on server change.
+final onebitClientProvider = Provider<OnebitApiClient?>((ref) {
   final server = ref.watch(selectedServerProvider);
   if (server == null) return null;
-  final client = 1bitApiClient(server);
+  final client = OnebitApiClient(server);
   ref.onDispose(client.close);
   return client;
 });

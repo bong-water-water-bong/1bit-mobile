@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:just_audio/just_audio.dart';
 import 'package:record/record.dart';
 
-import '../api/1bit_client.dart';
+import '../api/lemonade_client.dart';
 import '../api/realtime/realtime_audio_socket.dart';
 import '../api/types/audio_request.dart';
 import '../api/types/chat_message.dart';
@@ -27,7 +27,7 @@ import 'audio_transcription_service.dart';
 /// Full-duplex (interruption) is intentionally out of scope here — the user
 /// can tap the hang-up button or the pause toggle to stop the loop.
 class DuplexVoiceSession {
-  final 1bitApiClient client;
+  final OnebitApiClient client;
   final String llmModel;
   final String? ttsModel;
   final String asrModel;

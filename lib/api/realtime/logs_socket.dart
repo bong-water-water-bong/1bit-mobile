@@ -12,7 +12,7 @@ import '../1bit_client.dart';
 /// resume from a known sequence number; the server first sends a `logs.snapshot` of
 /// up to 5000 entries, then live `logs.entry` messages.
 class LogsSocket {
-  final 1bitApiClient _client;
+  final OnebitApiClient _client;
   WebSocketChannel? _channel;
 
   final _events = StreamController<LogsEvent>.broadcast();

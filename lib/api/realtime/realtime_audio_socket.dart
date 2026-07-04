@@ -27,8 +27,8 @@ class RealtimeAudioSocket {
   RealtimeAudioSocket(this._server);
 
   /// Convenience constructor for call sites that already hold a
-  /// [1bitApiClient] — pulls the server out of it.
-  RealtimeAudioSocket.forClient(1bitApiClient client) : this(client.server);
+  /// [OnebitApiClient] — pulls the server out of it.
+  RealtimeAudioSocket.forClient(OnebitApiClient client) : this(client.server);
 
   Stream<RealtimeEvent> get events => _events.stream;
   Stream<RealtimeConnectionState> get state => _state.stream;

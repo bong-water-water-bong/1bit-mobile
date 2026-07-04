@@ -8,7 +8,7 @@ import '../types/chat_request.dart';
 import '../types/chat_response.dart';
 
 class ChatEndpoint {
-  final 1bitApiClient _client;
+  final OnebitApiClient _client;
   ChatEndpoint(this._client);
 
   /// `POST /v1/chat/completions` with `stream: false`.

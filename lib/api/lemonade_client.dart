@@ -21,7 +21,7 @@ import '../models/server_config.dart';
 ///
 /// Endpoints are exposed via grouped sub-objects ([chat], [images], [audio], [models],
 /// [admin]). Each sub-object uses this instance for its request plumbing.
-class 1bitApiClient {
+class OnebitApiClient {
   final ServerConfig server;
   final http.Client _http;
 
@@ -31,7 +31,7 @@ class 1bitApiClient {
   late final ModelsEndpoint models;
   late final AdminEndpoint admin;
 
-  1bitApiClient(this.server, {http.Client? client}) : _http = client ?? http.Client() {
+  OnebitApiClient(this.server, {http.Client? client}) : _http = client ?? http.Client() {
     chat = ChatEndpoint(this);
     images = ImagesEndpoint(this);
     audio = AudioEndpoint(this);

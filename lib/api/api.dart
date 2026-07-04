@@ -1,6 +1,6 @@
 /// 1bit / OpenAI-compatible API client.
 ///
-/// Use [1bitApiClient] as the entry point. Typed request/response objects
+/// Use [OnebitApiClient] as the entry point. Typed request/response objects
 /// live under `types/`. Tool-call streaming and SSE machinery under `sse/`.
 /// WebSocket protocols (audio realtime, logs) under `realtime/`.
 library;

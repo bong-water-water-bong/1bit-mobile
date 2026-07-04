@@ -3,7 +3,7 @@ import '../types/audio_request.dart';
 import '../types/audio_response.dart';
 
 class AudioEndpoint {
-  final 1bitApiClient _client;
+  final OnebitApiClient _client;
   AudioEndpoint(this._client);
 
   /// `POST /v1/audio/speech` — TTS. Returns raw audio bytes.
