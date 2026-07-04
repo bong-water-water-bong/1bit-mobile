@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/1bit_client_provider.dart';
+import '../../providers/onebit_client_provider.dart';
 
 class AdminSystemInfoTab extends ConsumerStatefulWidget {
   const AdminSystemInfoTab({super.key});
