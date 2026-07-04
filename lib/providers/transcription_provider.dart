@@ -8,15 +8,15 @@ import 'package:isar_community/isar.dart';
 import 'package:record/record.dart';
 import 'package:uuid/uuid.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:1bit_mobile/models/transcription.dart';
-import 'package:1bit_mobile/providers/models_provider.dart';
-import 'package:1bit_mobile/providers/model_defaults_provider.dart';
-import 'package:1bit_mobile/providers/servers_provider.dart';
-import 'package:1bit_mobile/services/audio_transcription_service.dart';
-import 'package:1bit_mobile/services/audio_recorder_service.dart';
-import 'package:1bit_mobile/services/realtime_transcription_service.dart';
-import 'package:1bit_mobile/storage/database.dart';
-import 'package:1bit_mobile/storage/entities/transcription_entity.dart';
+import 'package:onebit_mobile/models/transcription.dart';
+import 'package:onebit_mobile/providers/models_provider.dart';
+import 'package:onebit_mobile/providers/model_defaults_provider.dart';
+import 'package:onebit_mobile/providers/servers_provider.dart';
+import 'package:onebit_mobile/services/audio_transcription_service.dart';
+import 'package:onebit_mobile/services/audio_recorder_service.dart';
+import 'package:onebit_mobile/services/realtime_transcription_service.dart';
+import 'package:onebit_mobile/storage/database.dart';
+import 'package:onebit_mobile/storage/entities/transcription_entity.dart';
 
 // Recording state
 enum RecordingState { idle, recording, processing }

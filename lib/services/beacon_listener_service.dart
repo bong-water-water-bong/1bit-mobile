@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:1bit_mobile/models/discovered_server.dart';
+import 'package:onebit_mobile/models/discovered_server.dart';
 
 class BeaconListenerService {
   /// Default UDP port to listen on. Must match the port used by

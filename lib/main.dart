@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:1bit_mobile/providers/beacon_provider.dart';
-import 'package:1bit_mobile/providers/theme_provider.dart';
-import 'package:1bit_mobile/screens/chat_screen.dart';
-import 'package:1bit_mobile/screens/settings_screen.dart';
-import 'package:1bit_mobile/screens/transcription_screen.dart';
-import 'package:1bit_mobile/screens/model_defaults_screen.dart';
-import 'package:1bit_mobile/storage/database.dart';
-import 'package:1bit_mobile/storage/legacy_migration.dart';
-import 'package:1bit_mobile/utils/constants.dart';
-import 'package:1bit_mobile/widgets/ai_super_hack_overlay.dart';
+import 'package:onebit_mobile/providers/beacon_provider.dart';
+import 'package:onebit_mobile/providers/theme_provider.dart';
+import 'package:onebit_mobile/screens/chat_screen.dart';
+import 'package:onebit_mobile/screens/settings_screen.dart';
+import 'package:onebit_mobile/screens/transcription_screen.dart';
+import 'package:onebit_mobile/screens/model_defaults_screen.dart';
+import 'package:onebit_mobile/storage/database.dart';
+import 'package:onebit_mobile/storage/legacy_migration.dart';
+import 'package:onebit_mobile/utils/constants.dart';
+import 'package:onebit_mobile/widgets/ai_super_hack_overlay.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

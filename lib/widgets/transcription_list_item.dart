@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:1bit_mobile/constants/colors.dart';
-import 'package:1bit_mobile/models/transcription.dart';
+import 'package:onebit_mobile/constants/colors.dart';
+import 'package:onebit_mobile/models/transcription.dart';
 
 class TranscriptionListItem extends StatelessWidget {
   final Transcription transcription;

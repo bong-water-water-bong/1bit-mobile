@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:1bit_mobile/constants/colors.dart';
-import 'package:1bit_mobile/services/audio_playback_service.dart';
+import 'package:onebit_mobile/constants/colors.dart';
+import 'package:onebit_mobile/services/audio_playback_service.dart';
 import 'package:just_audio/just_audio.dart';
 
 class AudioWaveformBar extends StatefulWidget {

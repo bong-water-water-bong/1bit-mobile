@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:1bit_mobile/api/vision_client.dart';
-import 'package:1bit_mobile/api/types/vision_types.dart';
+import 'package:onebit_mobile/api/vision_client.dart';
+import 'package:onebit_mobile/api/types/vision_types.dart';
 
 void main() {
   group('VisionApiClient.startSession', () {

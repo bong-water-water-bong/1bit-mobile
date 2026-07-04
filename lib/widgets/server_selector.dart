@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:1bit_mobile/providers/servers_provider.dart';
-import 'package:1bit_mobile/screens/servers_screen.dart';
+import 'package:onebit_mobile/providers/servers_provider.dart';
+import 'package:onebit_mobile/screens/servers_screen.dart';
 
 /// Drawer-friendly picker for the active server. Tapping a row switches
 /// `selectedServerProvider`, which cascades through `1bitClientProvider`

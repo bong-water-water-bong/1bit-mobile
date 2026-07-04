@@ -1,5 +1,5 @@
-import 'package:1bit_mobile/models/chat_message.dart';
-import 'package:1bit_mobile/models/model_defaults.dart';
+import 'package:onebit_mobile/models/chat_message.dart';
+import 'package:onebit_mobile/models/model_defaults.dart';
 
 class ChatHistory {
   final String id;

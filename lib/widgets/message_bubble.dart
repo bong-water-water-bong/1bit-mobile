@@ -5,12 +5,12 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:markdown/markdown.dart' as md;
-import 'package:1bit_mobile/models/chat_message.dart';
-import 'package:1bit_mobile/constants/messages.dart';
-import 'package:1bit_mobile/constants/colors.dart';
-import 'package:1bit_mobile/providers/chat_history_provider.dart';
-import 'package:1bit_mobile/screens/image_viewer_screen.dart';
-import 'package:1bit_mobile/widgets/inline_audio_player.dart';
+import 'package:onebit_mobile/models/chat_message.dart';
+import 'package:onebit_mobile/constants/messages.dart';
+import 'package:onebit_mobile/constants/colors.dart';
+import 'package:onebit_mobile/providers/chat_history_provider.dart';
+import 'package:onebit_mobile/screens/image_viewer_screen.dart';
+import 'package:onebit_mobile/widgets/inline_audio_player.dart';
 
 class MessageBubble extends ConsumerWidget {
   final ChatMessage message;

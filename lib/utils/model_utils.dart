@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:1bit_mobile/constants/colors.dart';
+import 'package:onebit_mobile/constants/colors.dart';
 
 /// Utility class for model detection and display logic
 class ModelUtils {

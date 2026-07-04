@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:1bit_mobile/providers/chat_provider.dart';
-import 'package:1bit_mobile/providers/omni_router_provider.dart';
-import 'package:1bit_mobile/widgets/chat_input.dart';
-import 'package:1bit_mobile/screens/talk_screen.dart';
-import 'package:1bit_mobile/widgets/manual_tools_bar.dart';
-import 'package:1bit_mobile/widgets/message_bubble.dart';
-import 'package:1bit_mobile/widgets/chat_drawer.dart';
-import 'package:1bit_mobile/widgets/model_selector.dart';
-import 'package:1bit_mobile/constants/colors.dart';
+import 'package:onebit_mobile/providers/chat_provider.dart';
+import 'package:onebit_mobile/providers/omni_router_provider.dart';
+import 'package:onebit_mobile/widgets/chat_input.dart';
+import 'package:onebit_mobile/screens/talk_screen.dart';
+import 'package:onebit_mobile/widgets/manual_tools_bar.dart';
+import 'package:onebit_mobile/widgets/message_bubble.dart';
+import 'package:onebit_mobile/widgets/chat_drawer.dart';
+import 'package:onebit_mobile/widgets/model_selector.dart';
+import 'package:onebit_mobile/constants/colors.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key});

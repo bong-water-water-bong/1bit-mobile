@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:1bit_mobile/models/server_config.dart';
-import 'package:1bit_mobile/providers/servers_provider.dart';
-import 'package:1bit_mobile/providers/vision_provider.dart';
+import 'package:onebit_mobile/models/server_config.dart';
+import 'package:onebit_mobile/providers/servers_provider.dart';
+import 'package:onebit_mobile/providers/vision_provider.dart';
 
 class _ServerStub extends SelectedServerNotifier {
   final ServerConfig? _initial;

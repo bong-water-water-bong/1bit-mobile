@@ -7,7 +7,7 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:1bit_mobile/main.dart';
+import 'package:onebit_mobile/main.dart';
 
 void main() {
   testWidgets('App loads smoke test', (WidgetTester tester) async {

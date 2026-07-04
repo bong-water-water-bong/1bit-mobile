@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:1bit_mobile/providers/transcription_provider.dart';
-import 'package:1bit_mobile/screens/transcription_detail_screen.dart';
-import 'package:1bit_mobile/widgets/recording_widget.dart';
-import 'package:1bit_mobile/widgets/transcription_list_item.dart';
+import 'package:onebit_mobile/providers/transcription_provider.dart';
+import 'package:onebit_mobile/screens/transcription_detail_screen.dart';
+import 'package:onebit_mobile/widgets/recording_widget.dart';
+import 'package:onebit_mobile/widgets/transcription_list_item.dart';
 
 class TranscriptionScreen extends ConsumerWidget {
   const TranscriptionScreen({super.key});

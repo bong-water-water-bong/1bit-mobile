@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:1bit_mobile/providers/chat_provider.dart';
-import 'package:1bit_mobile/providers/voice_mode_provider.dart';
-import 'package:1bit_mobile/constants/messages.dart';
-import 'package:1bit_mobile/utils/image_utils.dart';
+import 'package:onebit_mobile/providers/chat_provider.dart';
+import 'package:onebit_mobile/providers/voice_mode_provider.dart';
+import 'package:onebit_mobile/constants/messages.dart';
+import 'package:onebit_mobile/utils/image_utils.dart';
 
 class ChatInput extends ConsumerStatefulWidget {
   final ScrollController? scrollController;

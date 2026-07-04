@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:1bit_mobile/models/discovered_server.dart';
-import 'package:1bit_mobile/services/beacon_listener_service.dart';
+import 'package:onebit_mobile/models/discovered_server.dart';
+import 'package:onebit_mobile/services/beacon_listener_service.dart';
 
 final beaconServiceProvider = Provider<BeaconListenerService>((ref) {
   final service = BeaconListenerService();

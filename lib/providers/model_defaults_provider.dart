@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:1bit_mobile/models/model_defaults.dart';
-import 'package:1bit_mobile/providers/chat_history_provider.dart';
-import 'package:1bit_mobile/providers/models_provider.dart';
-import 'package:1bit_mobile/storage/database.dart';
+import 'package:onebit_mobile/models/model_defaults.dart';
+import 'package:onebit_mobile/providers/chat_history_provider.dart';
+import 'package:onebit_mobile/providers/models_provider.dart';
+import 'package:onebit_mobile/storage/database.dart';
 
 // Global model defaults persisted to SharedPreferences
 final globalModelDefaultsProvider =

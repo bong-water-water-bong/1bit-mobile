@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:1bit_mobile/models/server_config.dart';
+import 'package:onebit_mobile/models/server_config.dart';
 
 class AudioTranscriptionService {
   final ServerConfig server;

@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:1bit_mobile/providers/transcription_provider.dart';
+import 'package:onebit_mobile/providers/transcription_provider.dart';
 
 class LiveAudioVisualizer extends ConsumerStatefulWidget {
   final Color color;

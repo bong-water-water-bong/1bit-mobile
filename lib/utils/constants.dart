@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:1bit_mobile/constants/colors.dart';
+import 'package:onebit_mobile/constants/colors.dart';
 
 // Re-export AppColors from the centralized colors file for backward compatibility
-export 'package:1bit_mobile/constants/colors.dart' show AppColors;
+export 'package:onebit_mobile/constants/colors.dart' show AppColors;
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(

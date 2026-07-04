@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:1bit_mobile/providers/models_provider.dart';
-import 'package:1bit_mobile/utils/model_utils.dart';
+import 'package:onebit_mobile/providers/models_provider.dart';
+import 'package:onebit_mobile/utils/model_utils.dart';
 
 class ModelSelector extends ConsumerWidget {
   final bool compact; // For different display modes

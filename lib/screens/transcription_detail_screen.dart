@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:1bit_mobile/models/transcription.dart';
-import 'package:1bit_mobile/widgets/audio_waveform_bar.dart';
+import 'package:onebit_mobile/models/transcription.dart';
+import 'package:onebit_mobile/widgets/audio_waveform_bar.dart';
 
 class TranscriptionDetailScreen extends ConsumerStatefulWidget {
   final Transcription transcription;

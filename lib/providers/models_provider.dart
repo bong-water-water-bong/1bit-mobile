@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:1bit_mobile/api/1bit_client.dart';
-import 'package:1bit_mobile/providers/servers_provider.dart';
-import 'package:1bit_mobile/utils/model_utils.dart';
+import 'package:onebit_mobile/api/1bit_client.dart';
+import 'package:onebit_mobile/providers/servers_provider.dart';
+import 'package:onebit_mobile/utils/model_utils.dart';
 
 final modelsProvider = StateNotifierProvider<ModelsNotifier, List<ModelInfo>>(
   (ref) => ModelsNotifier(ref),
